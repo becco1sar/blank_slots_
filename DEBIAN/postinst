@@ -1,0 +1,34 @@
+#!/bin/bash
+#Command  to run after package install
+
+#Create folders /file (log file, tmp folders for screenshot) and set permissions
+echo 'creating blank_slot folder under /tmp to contain the screenshots'
+mkdir /tmp/blank_slot # destination for screenshot are removed after reboot
+echo 'changin owner of /tmp/blank_slot to ccplayer'
+chown ccplayer:ccplayer /tmp/blank_slot
+echo 'Set permission to  rwx r-x r-x for folder /tmp/blank_slot'
+chown 755 /tmp/blank_slot
+
+#create the log file and change owner.
+echo 'Creating log file /var/log/blank_slot.log'
+touch /var/log/blank_slot.log #will hold events about the screenshots when a blank slot was  detected,  if it raised an alarm or cleared 
+echo 'Changing owner for log file /var/log/blank_slot.log'
+chown ccplayer:ccplayer /var/log/blank_slot.log
+echo 'Set permission to  --- r-x r-x for file /var/log/blank_slot.log'
+chown 644 /var/log/blank_slot.log
+
+#allow the blank_slot.py to run
+echo 'Making the script executable -> /opt/scripts/blank_slot/blank_slot.py'
+chmod +x /opt/scripts/blank_slot/blank_slot.py
+
+# #dependencies will be install using apt or pip if allowed using the requirements.txt (pip not installed by default in our environment)
+# echo 'Installing pillow library for Python'
+# apt install python3-pil
+
+#enable start service
+echo 'restarting systemd'
+systemctl daemon-reload
+echo 'enabling blank_slot.service'
+systemctl enable blank_slot.service
+echo 'starting blank_slot.service'
+systemctl start blank_slot.service

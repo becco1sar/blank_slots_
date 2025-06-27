@@ -1,0 +1,8 @@
+Package:blankSlots
+Version: 0.0.1
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: python3, python3-pip, ffmpeg, python3-pil
+Maintainer: Tech DN Network Linux Team <soufiane.arrazouki@bauermediaoutdoor.com>
+Description: Tool to detect blank frames by taking and analyzing screenshots. This tool takes a screenshot every X seconds and analyzes it pixel by pixel to determine if the screen is blank or not. Designed for automated monitoring.
