@@ -1,0 +1,47 @@
+name: blank slots detection
+
+on:
+    push:
+        branches:
+            - 'main'
+
+jobs:
+    package:
+        runs-on: self-hosted
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Install Dependencies
+              run: |
+                apt install -y sudo
+                sudo apt update
+                sudo apt install -y python3 \
+                    python3-pil \
+                    ffmpeg 
+
+            - name: Create package directories
+              run: |
+                cd /tmp
+                sudo mkdir -p blank_slots/DEBIAN \
+                    blank_slots/etc/blank_slot \
+                    blank_slots/etc/systemd \
+                    blank_slots/opt
+
+            - name: Copy package files to runner
+              run: |
+                sudo cp -r ./DEBIAN/ /tmp/blank_slots/DEBIAN/
+                sudo cp -r ./etc/ /tmp/blank_slots/etc
+            - name: Set Permissions
+              run: |
+                sudo chmod -R 0755 /tmp/blank_slots/
+            - name: Build package
+              run: |
+                sudo dpkg-build --build /tmp/blank_slots
+            - name: Install the package
+              run: |
+                sudo apt install -y /tmp/blank_slots.deb
+
+
+
+
