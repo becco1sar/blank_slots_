@@ -8,6 +8,9 @@ echo 'changin owner of /tmp/blank_slots to ccplayer'
 chown ubuntu:ubuntu /tmp/blank_slots
 echo 'Set permission to  rwx r-x r-x for folder /tmp/blank_slots'
 chown 755 /tmp/blank_slots
+echo 'create the tool final location'
+mkdir /opt/script/blank_slots
+chown 755 /tmp/blank_slots
 
 #create the log file and change owner.
 echo 'Creating log file /var/log/blank_slot.log'
