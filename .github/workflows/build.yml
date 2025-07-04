@@ -33,6 +33,7 @@ jobs:
               run: |
                 sudo cp -r ./DEBIAN /tmp/blank_slots/
                 sudo cp -r ./etc/ /tmp/blank_slots/
+                sudo cp -r ./opt/ /tmp/blank_slots/
             - name: Set Permissions
               run: |
                 sudo chmod -R 0755 /tmp/blank_slots/
