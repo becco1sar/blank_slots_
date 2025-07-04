@@ -23,7 +23,7 @@ chown 644 /var/log/blank_slot.log
 
 #copy tool to the appropriate folder
 echo 'Copy blankslotdetector to /opt/scripts/blank_slots'
-cp ./blank_slots/opt/blank_slot.py /opt/scripts/blank_slots/blank_slot.py
+cp ./opt/scripts/blank_slots/blank_slot.py /opt/scripts/blank_slots/blank_slot.py
 #allow the blank_slot.py to run
 echo 'Making the script executable -> /opt/scripts/blank_slots/blank_slot.py'
 chmod +x /opt/scripts/blank_slots/blank_slot.py
