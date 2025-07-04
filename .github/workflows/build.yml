@@ -23,15 +23,15 @@ jobs:
             - name: Create package directories
               run: |
                 cd /tmp
-                sudo mkdir -p blank_slots/DEBIAN \
-                    blank_slots/etc/blank_slot \
-                    blank_slots/etc/systemd \
-                    blank_slots/opt
+                  sudo mkdir -p blank_slots
+                #     blank_slots/etc/blank_slot \
+                #     blank_slots/etc/systemd \
+                #     blank_slots/opt
 
             - name: Copy package files to runner
               run: |
-                sudo cp -r ./DEBIAN/ /tmp/blank_slots/DEBIAN/
-                sudo cp -r ./etc/ /tmp/blank_slots/etc
+                sudo cp -r ./DEBIAN /tmp/blank_slots/
+                sudo cp -r ./etc/ /tmp/blank_slots/
             - name: Set Permissions
               run: |
                 sudo chmod -R 0755 /tmp/blank_slots/
