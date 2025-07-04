@@ -4,7 +4,8 @@ on:
     push:
         branches:
             - 'main'
-
+        tags:
+            - "v*"
 jobs:
     package:
         runs-on: self-hosted
@@ -40,4 +41,9 @@ jobs:
                 sudo dpkg --build /tmp/blank_slots
             - name: Install the package
               run: |
-                sudo apt install -y /tmp/blank_slots.deb
+                sudo apt install -y /tmp/blank_slots.deb            
+            - name: Upload .deb as artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: blankslots-deb
+                  path: /tmp/blank_slots

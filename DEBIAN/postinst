@@ -21,6 +21,8 @@ chown ubuntu:ubuntu /var/log/blank_slot.log
 echo 'Set permission to  --- r-x r-x for file /var/log/blank_slot.log'
 chown 644 /var/log/blank_slot.log
 
+#copy tool to the appropriate folder
+echo 'Copy blankslotdetector to /opt/scripts/blank_slots'
 #allow the blank_slot.py to run
 echo 'Making the script executable -> /opt/scripts/blank_slots/blank_slot.py'
 chmod +x /opt/scripts/blank_slots/blank_slot.py
