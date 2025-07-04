@@ -9,9 +9,9 @@ chown ubuntu:ubuntu /tmp/blank_slots_screenshots
 echo 'Set permission to  rwx r-x r-x for folder /tmp/blank_slots'
 chown 755 /tmp/blank_slots_screenshots
 echo 'create the tool final location'
-mkdir -p /opt/script/blank_slots
+mkdir -p /opt/scripts/blank_slots
 echo 'Set permission to  rwx r-x r-x for folder /opt/script/blank_slots'
-chown 755 /opt/script/blank_slots
+chown 755 /opt/scripts/blank_slots
 
 #create the log file and change owner.
 echo 'Creating log file /var/log/blank_slot.log'
@@ -27,7 +27,7 @@ chmod +x /opt/scripts/blank_slots/blank_slot.py
 
 #copy service to correct target location /etc/systemd/system
 echo 'Copying the script to /etc/systemd/system location'
-cp /tmp/blank_slots/etc/systemd/blank_slot.service /etc/systemd/blank_slot.service
+cp /tmp/blank_slots/etc/systemd/blank_slot.service /etc/systemd/system/blank_slot.service
 # #dependencies will be install using apt or pip if allowed using the requirements.txt (pip not installed by default in our environment)
 # echo 'Installing pillow library for Python'
 # apt install python3-pil

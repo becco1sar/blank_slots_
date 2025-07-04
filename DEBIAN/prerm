@@ -1,0 +1,7 @@
+echo "removing data file services and other resources related to blank_slots_detector "
+rm -rf /tmp/blank_slots.deb
+rm -rf /etc/systemd/system/blank_slot.service
+rm -rf /etc/systemd/blank_slot.service
+rm -rf /tmp/blank_slots_screenshots
+rm -rf /tmp/blank_slots
+rm -rf /var/log/blank_slot.log
