@@ -11,4 +11,4 @@ ExecStart=/usr/bin/python3 /opt/script/blank_slot/blank_slot.py
 Restart=on-failure
 
 [Install]
-WantedBy=multi=user.target
+WantedBy=multi-user.target

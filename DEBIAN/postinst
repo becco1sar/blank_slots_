@@ -2,15 +2,16 @@
 #Command  to run after package install
 
 #Create folders /file (log file, tmp folders for screenshot) and set permissions
-echo 'creating blank_slots folder under /tmp to contain the screenshots'
-mkdir /tmp/blank_slots # destination for screenshot are removed after reboot
-echo 'changin owner of /tmp/blank_slots to ccplayer'
-chown ubuntu:ubuntu /tmp/blank_slots
+echo 'creating blank_slots_screenshots folder under /tmp to contain the screenshots'
+mkdir /tmp/blank_slots_screenshots # destination for screenshot are removed after reboot
+echo 'changin owner of /tmp/blank_slots_screenshots to ccplayer'
+chown ubuntu:ubuntu /tmp/blank_slots_screenshots
 echo 'Set permission to  rwx r-x r-x for folder /tmp/blank_slots'
-chown 755 /tmp/blank_slots
+chown 755 /tmp/blank_slots_screenshots
 echo 'create the tool final location'
-mkdir /opt/script/blank_slots
-chown 755 /tmp/blank_slots
+mkdir -p /opt/script/blank_slots
+echo 'Set permission to  rwx r-x r-x for folder /opt/script/blank_slots'
+chown 755 /opt/script/blank_slots
 
 #create the log file and change owner.
 echo 'Creating log file /var/log/blank_slot.log'
