@@ -37,11 +37,7 @@ jobs:
                 sudo chmod -R 0755 /tmp/blank_slots/
             - name: Build package
               run: |
-                sudo dpkg-build --build /tmp/blank_slots
+                sudo dpkg --build /tmp/blank_slots
             - name: Install the package
               run: |
                 sudo apt install -y /tmp/blank_slots.deb
-
-
-
-
