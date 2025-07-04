@@ -23,13 +23,14 @@ chown 644 /var/log/blank_slot.log
 
 #copy tool to the appropriate folder
 echo 'Copy blankslotdetector to /opt/scripts/blank_slots'
+cp ./blank_slots/opt/blank_slot.py /opt/scripts/blank_slots/blank_slot.py
 #allow the blank_slot.py to run
 echo 'Making the script executable -> /opt/scripts/blank_slots/blank_slot.py'
 chmod +x /opt/scripts/blank_slots/blank_slot.py
 
 #copy service to correct target location /etc/systemd/system
 echo 'Copying the script to /etc/systemd/system location'
-cp /tmp/blank_slots/etc/systemd/blank_slot.service /etc/systemd/system/blank_slot.service
+cp ./etc/systemd/blank_slot.service /etc/systemd/system/blank_slot.service
 # #dependencies will be install using apt or pip if allowed using the requirements.txt (pip not installed by default in our environment)
 # echo 'Installing pillow library for Python'
 # apt install python3-pil
