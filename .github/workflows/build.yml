@@ -6,7 +6,8 @@ on:
       - "main"
     tags:
       - "v*"
-
+permissions:
+  contents: write
 jobs:
   package:
     runs-on: self-hosted
