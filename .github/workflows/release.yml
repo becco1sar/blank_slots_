@@ -1,4 +1,4 @@
-name: Build and Package with nfpm
+name: blank slots release
 
 on:
   workflow_call:
@@ -6,30 +6,28 @@ on:
       tags:
         type: string
         required: true
+
+permissions:
+  contents: write
+
 jobs:
-  package:
+  release:
     runs-on: self-hosted
+
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: Install nfpm
-        run: |
-          curl -sSL -o nfpm.deb https://github.com/goreleaser/nfpm/releases/download/v2.41.2/nfpm_2.41.2_amd64.deb
-          #file nfpm.deb  # Check if it's a valid .deb file
-          ls -lh nfpm.deb
-          sudo dpkg -i nfpm.deb || sudo apt-get install -f -y
-          nfpm --version  
-      - name: Create Packages with nfpm
-        run: |          
-          mkdir -p dist
-          nfpm package --config .github/nfpm.yml --target dist --packager deb
-      - name: Upload Packages
-        uses: actions/upload-artifact@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
-          name: packaged-files
-          path: dist/*
+          name: blankslots-deb
+
+      - name: Show files (debug)
+        run: ls -al
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            blankslots.deb
+            blank_slots.deb
