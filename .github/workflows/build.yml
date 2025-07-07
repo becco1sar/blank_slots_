@@ -1,50 +1,40 @@
 name: blank slots detection
 
 on:
-    push:
-        branches:
-            - 'main'
-        tags:
-            - "v*"
+  push:
+    tags:
+      - "v*"
+
 jobs:
-    package:
-        runs-on: self-hosted
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
+  package:
+    runs-on: self-hosted
+    outputs:
+      deb-path: /tmp/blank_slots/blank_slots.deb
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-            - name: Install Dependencies
-              run: |
-                sudo apt install -y sudo
-                sudo apt update
-                sudo apt install -y python3 \
-                    python3-pil \
-                    ffmpeg 
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3 python3-pil ffmpeg
 
-            - name: Create package directories
-              run: |
-                cd /tmp
-                  sudo mkdir -p blank_slots
-                #     blank_slots/etc/blank_slot \
-                #     blank_slots/etc/systemd \
-                #     blank_slots/opt
+      - name: Create package structure and build
+        run: |
+          sudo mkdir -p /tmp/blank_slots
+          sudo cp -r ./DEBIAN /tmp/blank_slots/
+          sudo cp -r ./etc/ /tmp/blank_slots/
+          sudo cp -r ./opt/ /tmp/blank_slots/
+          sudo chmod -R 0755 /tmp/blank_slots/
+          sudo dpkg --build /tmp/blank_slots
 
-            - name: Copy package files to runner
-              run: |
-                sudo cp -r ./DEBIAN /tmp/blank_slots/
-                sudo cp -r ./etc/ /tmp/blank_slots/
-                sudo cp -r ./opt/ /tmp/blank_slots/
-            - name: Set Permissions
-              run: |
-                sudo chmod -R 0755 /tmp/blank_slots/
-            - name: Build package
-              run: |
-                sudo dpkg --build /tmp/blank_slots
-            - name: Install the package
-              run: |
-                sudo apt install -y /tmp/blank_slots.deb            
-            - name: Upload .deb as artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: blankslots-deb
-                  path: /tmp/blank_slots
+      - name: Upload .deb as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: blankslots-deb
+          path: /tmp/blank_slots.deb
+
+  call-release:
+    uses: ./.github/workflows/release.yml
+    with:
+      tags: ${{ github.ref_name }}

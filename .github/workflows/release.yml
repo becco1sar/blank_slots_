@@ -5,9 +5,7 @@ on:
     inputs:
       tags:
         type: string
-        description: "Tag name"
-        default: "v*"
-
+        required: true
 jobs:
   package:
     runs-on: self-hosted

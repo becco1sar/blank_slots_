@@ -6,7 +6,7 @@ from io import BytesIO
 from collections import deque
 
 # Screenshot path
-SCREENSHOT_PATH="/tmp/blank_slot"
+SCREENSHOT_PATH="/tmp/blank_slots_screenshots"
 
 
 # Screen config
