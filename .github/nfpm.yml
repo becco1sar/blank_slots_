@@ -13,7 +13,7 @@ homepage: "https://github.com/clearchannelinternational/blank_slots"
 contents:
   - src: /tmp/blank_slots/bin
     dst: /usr/bin
-overrides:
-  deb:
-    fields:
-      Depends: "python3, ffmpeg, python3-pil"
+# overrides:
+#   deb:
+#     fields:
+#       Depends: "python3, ffmpeg, python3-pil"
