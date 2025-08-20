@@ -33,16 +33,27 @@ blank_events = deque()
 def take_screenshot():
     now = datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = f"{SCREENSHOT_PATH}/screen_{now}.png"
+    # cmd = [
+    #     "ffmpeg",
+    #     "-f", "gdigrab",
+    #     "-video_size", f"{MONITOR_WIDTH}x{MONITOR_HEIGHT}",
+    #     "-i", "desktop",
+    #     "-frames:v", "1",
+    #     "-f", "image2pipe",
+    #     "-vcodec", "png",
+    #     "pipe:1"
+    # ]
     cmd = [
-        "ffmpeg",
-        "-f", "gdigrab",
-        "-video_size", f"{MONITOR_WIDTH}x{MONITOR_HEIGHT}",
-        "-i", "desktop",
-        "-frames:v", "1",
+    "ffmpeg",
+    "-f", "x11grab",
+    "-video_size", f"{MONITOR_WIDTH}x{MONITOR_HEIGHT}",
+    "-i", os.getenv("DISPLAY", ":0.0"),
+            "-frames:v", "1",
         "-f", "image2pipe",
         "-vcodec", "png",
         "pipe:1"
     ]
+
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     return result, filename
 
