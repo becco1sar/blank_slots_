@@ -7,7 +7,7 @@ Type=simple
 User=ccplayer
 Group=sudo
 WorkingDirectory=/opt/scripts/blank_slots/
-ExecStart=/usr/bin/python3 /opt/scripts/blank_slots/blank_slot.py
+ExecStart=/usr/bin/python3 /opt/scripts/blankwatch.py
 Restart=on-failure
 
 [Install]

@@ -1,11 +1,98 @@
-name: blank_slots
-arch: amd64
+# nfpm.yaml
+name: blankwatch
+arch: all
 platform: linux
-version: 1.0.1
-section: default
-priority: extra
-maintainer: "Soufiane Ar-Razouki <soufiane.arrazouki@clearchannel.be>"
-description: "blank slot detection package"
-vendor: "Tech Europe"
-license: "MIT"
-homepage: "https://github.com/clearchannelinternational/blank_slots"
+version: 0.1.0
+release: 1
+section: utils
+priority: optional
+maintainer: Soufiane Ar-Razouki <soufiane.arrazouki@bauermediaoutdoor.com>
+vendor: Bauer Media Outdoor Tech Europe
+homepage: https://example.com/blankwatch
+license: MIT
+description: >
+  X11 screen watcher that samples every second and logs blank-slot durations.
+
+# Build both .deb and .rpm
+formats:
+  - deb
+
+# Runtime deps (adjust names if your distro differs)
+depends:
+  - python3
+  - python3-numpy
+  - python3-xlib
+  - x11-utils      # for xrandr
+  - procps         # for pid/kill/systemctl conveniences
+
+recommends:
+  - logrotate
+  - systemd
+
+# Files from your working tree -> target locations
+# Keep your repo paths as you prefer; map them here.
+contents:
+  # main script
+  - src: ./blankwatch.py
+    dst: /usr/local/bin/blankwatch
+    type: file
+    mode: 0755
+
+  # systemd unit
+  - src: ./packaging/blankwatch.service
+    dst: /etc/systemd/system/blankwatch.service
+    type: file
+    mode: 0644
+
+  # (optional) user-editable config if you decide to externalize constants later
+  # - src: ./packaging/blankwatch.conf
+  #   dst: /etc/blankwatch/blankwatch.conf
+  #   type: config|noreplace
+  #   mode: 0644
+
+  # logrotate
+  - src: ./packaging/blankwatch.logrotate
+    dst: /etc/logrotate.d/blankwatch
+    type: file
+    mode: 0644
+
+  # state + log dirs (created by package so the service can start cleanly)
+  - dst: /var/log/blankwatch.log
+    type: dir
+    mode: 0755
+    user: blankwatch
+    group: blankwatch
+  - dst: /var/lib/blankwatch
+    type: dir
+    mode: 0755
+    user: blankwatch
+    group: blankwatch
+  - dst: /etc/blankwatch
+    type: dir
+    mode: 0755
+
+overrides:
+  deb:
+    depends:
+      - python3
+      - python3-numpy
+      - python3-xlib
+      - x11-utils
+      - procps
+    scripts:
+      preinstall: ./packaging/scripts/preinstall.sh
+      postinstall: ./packaging/scripts/postinstall.sh
+      preremove: ./packaging/scripts/preremove.sh
+      postremove: ./packaging/scripts/postremove.sh
+  rpm:
+    depends:
+      - python3
+      - python3-numpy
+      - python3-Xlib
+      - xorg-x11-server-utils
+      - procps-ng
+    scripts:
+      preinstall: ./packaging/scripts/preinstall.sh
+      postinstall: ./packaging/scripts/postinstall.sh
+      preremove: ./packaging/scripts/preremove.sh
+      postremove: ./packaging/scripts/postremove.sh
