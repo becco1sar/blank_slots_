@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y python3-numpy, python3-xlib, x11-utils, procps
+          sudo apt install -y python3-numpy python3-xlib x11-utils procps
 
       - name: Copy Files to the corresponding destinations
         run: |
