@@ -1,14 +1,20 @@
+# /etc/systemd/system/blankwatch.service
 [Unit]
-Description=Service will run blank slot script to determine if a blank slot is detected or not
-After=network.target
+Description=BlankWatch
+After=graphical.target
+Wants=graphical.target
 
 [Service]
 Type=simple
-User=ccplayer
-Group=sudo
-WorkingDirectory=/opt/scripts/blank_slots/
-ExecStart=/usr/bin/python3 /opt/scripts/blankwatch.py
+User=ccplayer                 # <- your login user
+Group=ccplayer
+WorkingDirectory=/opt/scripts
+Environment=DISPLAY=:0        # <- use the value you saw
+Environment=XAUTHORITY=/home/ccplayer/.Xauthority
+Environment=XDG_RUNTIME_DIR=/run/user/1000   # <- your UID
+ExecStart=/bin/bash -lc '/opt/scripts/blankwatch'
 Restart=on-failure
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target

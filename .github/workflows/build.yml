@@ -23,7 +23,7 @@ jobs:
       - name: Copy Files to the corresponding destinations
         run: |
           sudo cp ./opt/scripts/blank_slots/blank_slot.py /opt/scripts/blankwatch.py
-          sudo cp ./etc/systemd/blank_slot.service /etc/systemd/blankwatch.service
+          sudo cp ./etc/systemd/blank_slot.service /etc/systemd/system/blankwatch.service
 
       - name: Create and set persmissions for required files
         run: |

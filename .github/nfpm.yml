@@ -2,7 +2,7 @@
 name: blankwatch
 arch: all
 platform: linux
-version: 0.1.0
+version: 1.0.0
 release: 1
 section: utils
 priority: optional
