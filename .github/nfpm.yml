@@ -31,13 +31,11 @@ contents:
   - src: ./opt/scripts/blank_slots/blankwatch.py
     dst: /opt/scripts/blankwatch.py
     type: file
-    mode: 0755
 
   # systemd unit
   - src: ./etc/systemd/blankwatch.service
     dst: /etc/systemd/system/blankwatch.service
     type: file
-    mode: 0644
 
 overrides:
   deb:
