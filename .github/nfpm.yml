@@ -3,7 +3,6 @@ name: blankwatch
 arch: all
 platform: linux
 version: 1.0.0
-release: 1
 section: utils
 priority: optional
 maintainer: Soufiane Ar-Razouki <soufiane.arrazouki@bauermediaoutdoor.com>
@@ -12,10 +11,6 @@ homepage: https://example.com/blankwatch
 license: MIT
 description: >
   X11 screen watcher that samples every second and logs blank-slot durations.
-
-# Build both .deb and .rpm
-formats:
-  - deb
 
 # Runtime deps (adjust names if your distro differs)
 depends:
@@ -33,43 +28,16 @@ recommends:
 # Keep your repo paths as you prefer; map them here.
 contents:
   # main script
-  - src: ./blankwatch.py
-    dst: /usr/local/bin/blankwatch
+  - src: ./opt/scripts/blank_slots/blankwatch.py
+    dst: /opt/scripts/blankwatch.py
     type: file
     mode: 0755
 
   # systemd unit
-  - src: ./packaging/blankwatch.service
+  - src: ./etc/systemd/blankwatch.service
     dst: /etc/systemd/system/blankwatch.service
     type: file
     mode: 0644
-
-  # (optional) user-editable config if you decide to externalize constants later
-  # - src: ./packaging/blankwatch.conf
-  #   dst: /etc/blankwatch/blankwatch.conf
-  #   type: config|noreplace
-  #   mode: 0644
-
-  # logrotate
-  - src: ./packaging/blankwatch.logrotate
-    dst: /etc/logrotate.d/blankwatch
-    type: file
-    mode: 0644
-
-  # state + log dirs (created by package so the service can start cleanly)
-  - dst: /var/log/blankwatch.log
-    type: dir
-    mode: 0755
-    user: blankwatch
-    group: blankwatch
-  - dst: /var/lib/blankwatch
-    type: dir
-    mode: 0755
-    user: blankwatch
-    group: blankwatch
-  - dst: /etc/blankwatch
-    type: dir
-    mode: 0755
 
 overrides:
   deb:
