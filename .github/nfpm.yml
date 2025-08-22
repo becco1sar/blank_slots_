@@ -46,19 +46,7 @@ overrides:
       - x11-utils
       - procps
     scripts:
-      preinstall: ./packaging/scripts/preinstall.sh
-      postinstall: ./packaging/scripts/postinstall.sh
-      preremove: ./packaging/scripts/preremove.sh
-      postremove: ./packaging/scripts/postremove.sh
-  rpm:
-    depends:
-      - python3
-      - python3-numpy
-      - python3-Xlib
-      - xorg-x11-server-utils
-      - procps-ng
-    scripts:
-      preinstall: ./packaging/scripts/preinstall.sh
-      postinstall: ./packaging/scripts/postinstall.sh
-      preremove: ./packaging/scripts/preremove.sh
-      postremove: ./packaging/scripts/postremove.sh
+      preinstall: ./DEBIAN/postinst
+      postinstall: ./DEBIAN/preinst
+      preremove: ./DEBIAN/prerm
+      postremove: ./DEBIAN/postrm
