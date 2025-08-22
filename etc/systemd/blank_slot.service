@@ -6,15 +6,8 @@ Wants=graphical.target
 
 [Service]
 Type=simple
-User=ccplayer                 # <- your login user
-Group=ccplayer
-WorkingDirectory=/opt/scripts
-Environment=DISPLAY=:0        # <- use the value you saw
-Environment=XAUTHORITY=/home/ccplayer/.Xauthority
-Environment=XDG_RUNTIME_DIR=/run/user/1000   # <- your UID
-ExecStart=/bin/bash -lc '/opt/scripts/blankwatch'
+ExecStart=/usr/bin/python3 /opt/scripts/blankwatch.py
 Restart=on-failure
-RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
