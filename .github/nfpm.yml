@@ -28,12 +28,12 @@ recommends:
 # Keep your repo paths as you prefer; map them here.
 contents:
   # main script
-  - src: ./opt/scripts/blank_slots/blankwatch.py
+  - src: ./opt/scripts/blank_slots/blank_slot.py
     dst: /opt/scripts/blankwatch.py
     type: file
 
   # systemd unit
-  - src: ./etc/systemd/blankwatch.service
+  - src: ./etc/systemd/blank_slot.service
     dst: /etc/systemd/system/blankwatch.service
     type: file
 
