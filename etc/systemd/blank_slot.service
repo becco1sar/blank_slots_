@@ -1,13 +1,13 @@
-# /etc/systemd/system/blankwatch.service
 [Unit]
 Description=BlankWatch
-After=graphical.target
-Wants=graphical.target
 
 [Service]
-Type=simple
+WorkingDirectory=/opt/scripts
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/ccplayer/.Xauthority
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 ExecStart=/usr/bin/python3 /opt/scripts/blankwatch.py
 Restart=on-failure
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

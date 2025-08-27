@@ -8,6 +8,7 @@
 
 import subprocess
 import time
+import logging
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
@@ -25,18 +26,30 @@ DOWNSCALE = 0.5                       # analyze at 50% size
 # ---------- Syslog (added) ----------
 import syslog
 TOOL_NAME = "blankwatch"
+LOG_FILE = "/var/log/blankwatch.log"
 
-def syslog_open():
+#init logging
+logging.basicConfig(
+    filename=LOG_FILE,
+    filemode='a',
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - Blankwatch - %(message)s"
+)
+def create_log_file():
     try:
-        syslog.openlog(TOOL_NAME, syslog.LOG_PID)
-    except Exception:
-        pass
-
-def syslog_info(msg: str):
+        open(LOG_FILE, 'x');
+        print(f"log file created in {LOG_FILE}")
+    except FileExistsError as fileExists:
+        print(fileExists)
+                    
+def log_to_logfile(log):
     try:
-        syslog.syslog(syslog.LOG_INFO, msg)
-    except Exception:
-        pass
+        with open(LOG_FILE, 'a') as file:
+            file.write(log)
+    except FileNotFoundError as fileNotFound:
+        print(fileNotFound)
+    except Exception as e:
+        print(e) 
 
 # ---------- Helpers ----------
 def ts() -> str:
@@ -110,21 +123,22 @@ class Debounce:
 
 # ---------- Main loop ----------
 def main():
-    syslog_open()
+    create_log_file()
+
     print(f"[{ts()}] Blank detector started (Ubuntu 22 / X11). Sample every {BASE_SAMPLE_SEC}s")
-    syslog_info("service_started sample_sec=%s" % BASE_SAMPLE_SEC)
+    logging.info("service_started sample_sec=%s" % BASE_SAMPLE_SEC)
 
     monitors = get_monitors()
     if not monitors:
         msg = "No connected monitors found via xrandr."
         print(f"[{ts()}] {msg}")
-        syslog_info(msg)
+        logging.warning(msg)
         return
 
     for i, m in enumerate(monitors):
         line = f"mon{i}: {m['name']} {m['w']}x{m['h']} @ ({m['x']},{m['y']})"
         print(" ", line)
-        syslog_info("monitor_detected " + line)
+        logging.info("monitor_detected " + line)
 
     debounces: Dict[int, Debounce] = {i: Debounce() for i in range(len(monitors))}
 
@@ -139,7 +153,7 @@ def main():
             except Exception as e:
                 err = f"mon{i}: capture error: {e}"
                 print(f"[{ts()}] {err}")
-                syslog_info("error " + err)
+                logging.error("error " + err)
                 continue
 
             db = debounces[i]
@@ -157,7 +171,7 @@ def main():
 
                     print(f"[{ts()}] mon{i}: BLANK detected (start)")
                     # Syslog: state change -> detected=1
-                    syslog_info(
+                    logging.error(
                         f'monitor="{mon_name}" blank_slot_timestamp = "{iso(now)}" blank_slot_detected=1 '
                     )
                 else:
@@ -175,8 +189,8 @@ def main():
 
                         print(f"[{ts()}] mon{i}: BLANK ended; blank_slot_duration={duration:.1f}s")
                         # Syslog: state cleared + duration + set detected=0
-                        syslog_info(
-                            f'"{iso(now)}" monitor="{mon_name}" '
+                        logging.info(
+                            f'monitor="{mon_name}" '
                             f'blank_slot_detected=0 blank_slot_timestamp = "{iso(now)}" blank_slot_duration={duration:.1f}s'
                         )
                 # else: remain OK
@@ -188,4 +202,4 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("\nStopped.")
-        syslog_info("service_stopped")
+        logging.info("Blankwatch stopped manually")
