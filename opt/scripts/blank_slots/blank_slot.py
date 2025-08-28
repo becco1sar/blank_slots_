@@ -27,6 +27,17 @@ DOWNSCALE = 0.5                       # analyze at 50% size
 import syslog
 TOOL_NAME = "blankwatch"
 LOG_FILE = "/var/log/blankwatch.log"
+CLEARED_LEVEL_NUM = 25
+
+#register cleared level
+logging.addLevelName(CLEARED_LEVEL_NUM, "CLEARED")
+
+#setup the new level
+def cleared(self,message, *args, **kwargs):
+    if self.isEnabledFor(CLEARED_LEVEL_NUM):
+        self._log(CLEARED_LEVEL_NUM, message, args, **kwargs)
+#define the level
+logging.Logger.cleared = cleared
 
 #init logging
 logging.basicConfig(
@@ -35,6 +46,9 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - Blankwatch - %(message)s"
 )
+
+
+# ---------- Helpers ----------
 def create_log_file():
     try:
         open(LOG_FILE, 'x');
@@ -50,8 +64,7 @@ def log_to_logfile(log):
         print(fileNotFound)
     except Exception as e:
         print(e) 
-
-# ---------- Helpers ----------
+        
 def ts() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -124,21 +137,21 @@ class Debounce:
 # ---------- Main loop ----------
 def main():
     create_log_file()
-
+    logger = logging.getLogger("blankwatch")
     print(f"[{ts()}] Blank detector started (Ubuntu 22 / X11). Sample every {BASE_SAMPLE_SEC}s")
-    logging.info("service_started sample_sec=%s" % BASE_SAMPLE_SEC)
+    logger.info("service_started sample_sec=%s" % BASE_SAMPLE_SEC)
 
     monitors = get_monitors()
     if not monitors:
         msg = "No connected monitors found via xrandr."
         print(f"[{ts()}] {msg}")
-        logging.warning(msg)
+        logger.warning(msg)
         return
 
     for i, m in enumerate(monitors):
         line = f"mon{i}: {m['name']} {m['w']}x{m['h']} @ ({m['x']},{m['y']})"
         print(" ", line)
-        logging.info("monitor_detected " + line)
+        logger.info("monitor_detected " + line)
 
     debounces: Dict[int, Debounce] = {i: Debounce() for i in range(len(monitors))}
 
@@ -153,7 +166,7 @@ def main():
             except Exception as e:
                 err = f"mon{i}: capture error: {e}"
                 print(f"[{ts()}] {err}")
-                logging.error("error " + err)
+                logger.error("error " + err)
                 continue
 
             db = debounces[i]
@@ -171,7 +184,7 @@ def main():
 
                     print(f"[{ts()}] mon{i}: BLANK detected (start)")
                     # Syslog: state change -> detected=1
-                    logging.critical(
+                    logger.critical(
                         f'monitor="{mon_name}" blank_slot_timestamp = "{iso(now)}" blank_slot_detected=1 '
                     )
                 else:
@@ -189,7 +202,7 @@ def main():
 
                         print(f"[{ts()}] mon{i}: BLANK ended; blank_slot_duration={duration:.1f}s")
                         # Syslog: state cleared + duration + set detected=0
-                        logging.info(
+                        logger.cleared(
                             f'monitor="{mon_name}" '
                             f'blank_slot_detected=0 blank_slot_timestamp = "{iso(now)}" blank_slot_duration={duration:.1f}s'
                         )
