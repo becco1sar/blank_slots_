@@ -1,0 +1,2 @@
+systemctl enable blankwatch.service
+systemctl stat blankwatch.service
