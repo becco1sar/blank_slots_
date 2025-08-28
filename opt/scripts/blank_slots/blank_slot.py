@@ -171,7 +171,7 @@ def main():
 
                     print(f"[{ts()}] mon{i}: BLANK detected (start)")
                     # Syslog: state change -> detected=1
-                    logging.crtical(
+                    logging.critical(
                         f'monitor="{mon_name}" blank_slot_timestamp = "{iso(now)}" blank_slot_detected=1 '
                     )
                 else:
