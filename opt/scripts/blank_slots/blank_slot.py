@@ -44,7 +44,7 @@ logging.basicConfig(
     filename=LOG_FILE,
     filemode='a',
     level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - Blankwatch - %(message)s"
+    format="%(asctime)s - [%(levelname)s] - Blankwatch - %(message)s"
 )
 
 

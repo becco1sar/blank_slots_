@@ -46,7 +46,7 @@ overrides:
       - x11-utils
       - procps
     scripts:
-      preinstall: ./DEBIAN/postinst
-      postinstall: ./DEBIAN/preinst
+      preinstall: ./DEBIAN/preinst
+      postinstall: ./DEBIAN/postinst
       preremove: ./DEBIAN/prerm
       postremove: ./DEBIAN/postrm
