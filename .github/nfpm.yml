@@ -2,7 +2,7 @@
 name: blankwatch
 arch: all
 platform: linux
-version: 1.0.0-1
+version: 1.0.0-3
 section: utils
 priority: optional
 maintainer: Soufiane Ar-Razouki <soufiane.arrazouki@bauermediaoutdoor.com>
