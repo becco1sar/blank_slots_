@@ -1,2 +1,2 @@
 systemctl enable blankwatch.service
-systemctl stat blankwatch.service
+systemctl start blankwatch.service
